@@ -1,0 +1,15 @@
+<p>
+  {{cart.length}}
+</p>
+<table border="0">
+
+  <tr *ngFor="let p of products">
+    <td>{{p.name}}</td>
+    <td>
+      <button *ngIf="showAdd(p.id)" (click)="add(p.id)">Add</button>
+      <button *ngIf="showAddAnother(p.id)" (click)="addAnother(p.id)">Add Another</button>
+      <button *ngIf="showConfigure(p.id)" (click)="configure(p.id)">Configure</button>
+      <button *ngIf="showDelete(p.id)" (click)="delete(p.id)">Delete</button>
+    </td>
+  </tr>
+</table>
