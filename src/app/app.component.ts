@@ -10,6 +10,7 @@ export class AppComponent implements OnInit {
   name = "Angular " + VERSION.major;
   products = [];
   cart = [];
+  action = "";
   constructor(private productService: ProductService) {}
 
   ngOnInit() {
@@ -17,30 +18,48 @@ export class AppComponent implements OnInit {
   }
 
   showAdd(id) {
-    console.log("id", id, this.cart.find(c => c !== id), this.cart);
-    return this.cart.length === 0 || this.cart.find(c => c !== id);
+    return !this.cart.some(c => c === id);
   }
   showAddAnother(id) {
-    return this.cart.find(c => c === id);
+    return this.cart.some(c => c === id);
   }
   showConfigure(id) {
-    return true;
+    return this.cart.some(c => c === id);
   }
   showDelete(id) {
-    return true;
+    return this.cart.some(c => c === id);
   }
 
   add(id) {
-    this.cart.push(id);
+    this.loaderSimulation(() => this.cart.push(id), "Adding");
   }
 
   addAnother(id) {
-    this.cart.push(id);
+    this.loaderSimulation(() => this.cart.push(id), "Adding");
   }
   configure(id) {
-    console.log("configuring");
+    this.loaderSimulation(() => {}, "Configuring");
   }
   delete(id) {
-    this.cart = this.cart.filter(c => c !== id);
+    this.loaderSimulation(() => {
+      this.cart = this.cart.filter(c => c !== id);
+    }, "Deleting");
+  }
+
+  loaderSimulation(callback, actionName) {
+    this.action = actionName;
+    setTimeout(() => {
+      this.action += ".";
+      setTimeout(() => {
+        this.action += ".";
+        setTimeout(() => {
+          this.action += ".";
+          setTimeout(() => {
+            this.action = "";
+            callback();
+          }, 400);
+        }, 200);
+      }, 200);
+    }, 200);
   }
 }
